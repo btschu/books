@@ -11,25 +11,29 @@
 <body>
     <div class="container d-flex justify-content-center justify-content-around mt-5">
         <div class="card border-0 col-3">
-            <h1 class="mb-4">Book Title: {{  }}</h1>
+            <h1 class="mb-4">Book Title: {{ book.title }}</h1>
             <h3 class="mb-4">Favorited By:</h3>
                 <div class="mb-3 form-group border border-dark rounded p-4 d-flex flex-column">
-                    {% for author in authors %}
-                        <a href="/dojo/{{ dojo.id }}">{{ dojo.name }}</a>
+                    {% for author in book.authors_who_favorited %}
+                        <a href="/authors/{{ author.id }}">{{ author.first_name }} {{ author.last_name }}</a>
                     {% endfor %}
                 </div>
         </div>
         <div class="card border-0 col-5">
             <h1 class="mb-4">Add Books's Favorite</h1>
-            <form action="" method="post">
+            <form action="/join/author" method="post">
+                <input type="hidden" name="book_id" value="{{book.id}}">
                 <div class="mb-3 form-group d-flex align-items-center">
-                    <select name="" id="">
-                        <option value=""></option>
+                    <label for="author_id">Book:</label>
+                    <select name="author_id" class="form-control" >
+                        {% for author in unfavorited_authors %}
+                            <option value="{{author.id}}">{{author.first_name}} {{ author.last_name }}</option>
+                        {% endfor %}
                     </select>
-                    <button class="btn btn-primary" value="Create Dojo" >Add</button>
                 </div>
+                <button class="btn btn-primary mb-3" value="Add" >Add</button>
             </form>
-            <a href="/ninjas">Home</a>
+            <a href="/authors">Home</a>
         </div>
     </div>
 </body>

@@ -1,6 +1,7 @@
-from flask import render_template,redirect,request
 from flask_app import app
-from flask_app.models.book import Book
+from flask import redirect, render_template,request
+from ..models.author import Author
+from ..models.book import Book
 
 @app.route('/')
 def index():
@@ -15,12 +16,21 @@ def create_book():
     Book.save(request.form)
     return redirect('/books')
 
-# @app.route('/dojo/<int:id>')
-# def show(id):
-#     data ={
-#         "id":id
-#     }
-#     return render_template("dojo_members.html", dojo = Dojo.dojo_with_members(data))
+@app.route('/books/<int:id>')
+def show_book(id):
+    data ={
+        "id":id
+    }
+    return render_template("show_book.html", book=Book.get_by_id(data),unfavorited_authors=Author.unfavorited_authors(data))
+
+@app.route('/join/author',methods=['POST'])
+def join_author():
+    data = {
+        'author_id': request.form['author_id'],
+        'book_id': request.form['book_id']
+    }
+    Author.add_favorite(data)
+    return redirect(f"/books/{request.form['book_id']}")
 
 # @app.route('/users/new')
 # def new():

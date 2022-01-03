@@ -29,7 +29,7 @@
             <form action="" method="post">
                 <div class="mb-3 form-group border border-dark rounded p-4 d-flex flex-column">
                     {% for book in books %}
-                        <a href="/book/{{ book.id }}">{{ book.title }}</a>
+                        <a href="/books/{{ book.id }}">{{ book.title }}</a>
                     {% endfor %}
                 </div>
             </form>
