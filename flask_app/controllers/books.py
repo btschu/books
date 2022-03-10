@@ -7,21 +7,36 @@ from ..models.book import Book
 def index():
     return redirect('/authors')
 
+# view all books
+
 @app.route('/books')
 def books():
-    return render_template("books.html", books = Book.get_all())
+    context = {
+        'books' : Book.get_all()
+    }
+    return render_template("books.html", **context)
+
+# add a new book
 
 @app.route('/books/create',methods=['POST'])
 def create_book():
     Book.save(request.form)
     return redirect('/books')
 
+# view one book and all authors that liked that book.
+
 @app.route('/books/<int:id>')
 def show_book(id):
     data ={
         "id":id
     }
-    return render_template("show_book.html", book=Book.get_by_id(data),unfavorited_authors=Author.unfavorited_authors(data))
+    context = {
+        'book' : Book.get_by_id(data),
+        'unfavorited_authors' : Author.unfavorited_authors(data)
+    }
+    return render_template("show_book.html", **context)
+
+# add author to a list of authors that like a book
 
 @app.route('/join/author',methods=['POST'])
 def join_author():
@@ -31,29 +46,3 @@ def join_author():
     }
     Author.add_favorite(data)
     return redirect(f"/books/{request.form['book_id']}")
-
-# @app.route('/users/new')
-# def new():
-#     return render_template("create.html")
-
-
-# @app.route('/user/edit/<int:id>')
-# def edit(id):
-#     data ={
-#         "id":id
-#     }
-#     return render_template("edit.html", user = User.get_one(data))
-
-
-# @app.route('/user/update',methods=['POST'])
-# def update():
-#     User.update(request.form)
-#     return redirect('/users')
-
-# @app.route('/user/delete/<int:id>')
-# def delete(id):
-#     data = {
-#         'id': id
-#     }
-#     User.delete(data)
-#     return redirect('/users')
