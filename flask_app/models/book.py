@@ -53,13 +53,12 @@ class Book:
                 "id": row['authors.id'],
                 "first_name": row['first_name'],
                 "last_name": row['last_name'],
-                'created_at': row['created_at'],
-                'updated_at': row['updated_at']
+                'created_at': row['authors.created_at'],
+                'updated_at': row['authors.updated_at']
             }
             book.authors_who_favorited.append(author.Author(data))
         return book
 
-# is there another way to do this? maybe add it into the get_by_id method in an if statement?
     @classmethod
     def unfavorited_books(cls,data):
         query = """

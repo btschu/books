@@ -44,7 +44,6 @@ class Author:
         result = connectToMySQL(db).query_db(query,data)
         return cls(result[0])
 
-# is there another way to do this? maybe add it into the get_by_id method in an if statement?
     @classmethod
     def unfavorited_authors(cls,data):
         query = """
@@ -78,8 +77,8 @@ class Author:
                 "id": row['books.id'],
                 "title": row['title'],
                 "num_of_pages": row['num_of_pages'],
-                'created_at': row['created_at'],
-                'updated_at': row['updated_at']
+                'created_at': row['books.created_at'],
+                'updated_at': row['books.updated_at']
             }
             author.favorite_books.append(book.Book(data))
         return author
